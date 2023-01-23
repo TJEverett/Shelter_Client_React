@@ -1,11 +1,90 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import NavBar from "./NavBar";
+import SearchResult from "./SearchResult";
 
 function App() {
   //Temp Values
   // const authStatus = null;
   const authStatus = "1hr 52min";
+  const animalArray = [
+    {
+      id: "c1",
+      name: "Taz",
+      weightkilo: 5.5,
+      isfemale: false,
+      birthday: "2017-09-08T19:01:55",
+      coloring: "black",
+      description: "indoor / outdoor"
+    },
+    {
+      id: "c2",
+      name: "Phantom",
+      weightkilo: 2.5,
+      isfemale: true,
+      birthday: "2022-09-08T19:01:55",
+      coloring: "black",
+      description: "indoor"
+    },
+    {
+      id: "c3",
+      name: "Sasha",
+      weightkilo: 5.1,
+      isfemale: true,
+      birthday: "2017-09-08T19:01:55",
+      coloring: "grey striped",
+      description: "indoor"
+    },
+    {
+      id: "c4",
+      name: "Tigger",
+      weightkilo: 4.3,
+      isfemale: false,
+      birthday: "2022-09-08T19:01:55",
+      coloring: "grey striped",
+      description: "indoor"
+    },
+    {
+      id: "d1",
+      name: "Ceres",
+      weightkilo: 99.3,
+      isfemale: false,
+      birthday: "2017-09-08T19:01:55",
+      coloring: "blonde",
+      description: "known as Littles",
+      breed: "English Mastiff"
+    },
+    {
+      id: "d2",
+      name: "Cali",
+      weightkilo: 23.4,
+      isfemale: true,
+      birthday: "2022-09-08T19:01:55",
+      coloring: "black",
+      description: "meth lab",
+      breed: "Mutt"
+    },
+    {
+      id: "d3",
+      name: "Elsa",
+      weightkilo: 24.3,
+      isfemale: true,
+      birthday: "2017-09-08T19:01:55",
+      coloring: "black with brown highlights",
+      description: "allergic to food",
+      breed: "Doberman"
+    },
+    {
+      id: "d4",
+      name: "Lowkey",
+      weightkilo: 27.5,
+      isfemale: false,
+      birthday: "2022-09-08T19:01:55",
+      coloring: "black / blonde",
+      description: "tries to eat playmates",
+      breed: "German Shepard"
+    }
+  ]
 
   //Return Logic
   return(
@@ -16,7 +95,7 @@ function App() {
       </div>
       <Switch>
         <Route exact path="/cats">
-          <p>available cats</p>
+          <SearchResult animalType="cat" animalList={animalArray} />
         </Route>
         <Route path="/cats/edit">
           <p>edit/delete cat</p>
@@ -26,7 +105,7 @@ function App() {
         </Route>
 
         <Route exact path="/dogs">
-          <p>available dogs</p>
+          <SearchResult animalType="dog" animalList={animalArray} />
         </Route>
         <Route path="/dogs/edit">
           <p>edit/delete dog</p>
