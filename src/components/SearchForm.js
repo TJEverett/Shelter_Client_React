@@ -28,12 +28,16 @@ function SearchForm(props){
 
   function FormSubmit(event) {
     event.preventDefault();
+    const submitAnimalType = event.target.animalType.value;
+    const submitAnimalAge = event.target.animalAge.value;
+    const submitAnimalGender = event.target.animalGender.value;
     console.log("animalType:");
-    console.log(event.target.animalType.value);
+    console.log(submitAnimalType);
     console.log("animalAge:");
-    console.log(event.target.animalAge.value);
+    console.log(submitAnimalAge);
     console.log("animalGender:");
-    console.log(event.target.animalGender.value);
+    console.log(submitAnimalGender);
+    props.submitFunc(submitAnimalType, submitAnimalAge, submitAnimalGender);
   }
 
   //Select Arrays

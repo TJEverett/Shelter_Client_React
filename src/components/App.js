@@ -5,8 +5,8 @@ import SearchResult from "./SearchResult";
 
 function App() {
   //Temp Values
-  // const authStatus = null;
-  const authStatus = "1hr 52min";
+  const authStatus = null;
+  // const authStatus = "1hr 52min";
   const animalArray = [
     {
       id: "c1",
@@ -84,7 +84,7 @@ function App() {
       description: "tries to eat playmates",
       breed: "German Shepard"
     }
-  ]
+  ] //Will be replaced by API
 
   //Return Logic
   return(
