@@ -2,13 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import SearchForm from "./SearchForm";
 import SearchAnimal from "./SearchAnimal";
+import CustomModal from "./CustomModal";
 
 class SearchResult extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       animalType: props.animalType,
-      animalList: []
+      animalList: [],
+      animalSelected: null
     };
   }
 
@@ -40,11 +42,30 @@ class SearchResult extends React.Component {
     this.setState({animalList: newAnimalList});
   }
 
+  //Modal Functions
+  ModalShow = (animalId) => {
+    this.setState({animalSelected: animalId});
+  }
+  ModalHide = () => {
+    this.setState({animalSelected: null});
+  }
+
 
   //Render Logic
   render() {
+    let animalModal = null;
+    let modalContent = [];
+    if(this.state.animalSelected !== null){
+      modalContent.push(<h1>Test</h1>);
+      modalContent.push(<button type="button" onClick={() => console.log("edit:", this.state.animalSelected)}>Edit</button>);
+      animalModal = (
+        <CustomModal show={true} handleClose={this.ModalHide}>{modalContent}</CustomModal>
+      );
+    }
+
     return(
       <React.Fragment>
+        {animalModal}
         <SearchForm animalType={this.state.animalType} submitFunc={this.filterSearch} />
         <hr />
         {this.state.animalList.map((animal) => {
@@ -52,7 +73,8 @@ class SearchResult extends React.Component {
             animalFemale={animal.isfemale}
             animalBirthday={animal.birthday}
             animalWeight={animal.weightkilo}
-            animalModal={() => console.log("animal: " + animal.id)}
+            // animalModal={() => console.log("animal: " + animal.id)}
+            animalModal={() => this.ModalShow(animal.id)}
             key={animal.id} />)
         })}
       </React.Fragment>
