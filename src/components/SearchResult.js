@@ -39,7 +39,6 @@ class SearchResult extends React.Component {
     } else if(gender ==="male"){
       newAnimalList = newAnimalList.filter(animal => animal.isfemale === false);
     } //else all animals continue
-    console.log(newAnimalList);
     this.setState({animalList: newAnimalList});
   }
 

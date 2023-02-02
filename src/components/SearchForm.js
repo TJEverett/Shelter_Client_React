@@ -31,12 +31,6 @@ function SearchForm(props){
     const submitAnimalType = event.target.animalType.value;
     const submitAnimalAge = event.target.animalAge.value;
     const submitAnimalGender = event.target.animalGender.value;
-    console.log("animalType:");
-    console.log(submitAnimalType);
-    console.log("animalAge:");
-    console.log(submitAnimalAge);
-    console.log("animalGender:");
-    console.log(submitAnimalGender);
     props.submitFunc(submitAnimalType, submitAnimalAge, submitAnimalGender);
   }
 

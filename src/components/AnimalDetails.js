@@ -95,7 +95,6 @@ class AnimalDetails extends React.Component{
         );
       }
     }
-    console.log(animalDetails);
     return animalDetails;
   }
 
