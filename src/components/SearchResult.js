@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import SearchForm from "./SearchForm";
 import SearchAnimal from "./SearchAnimal";
 import CustomModal from "./CustomModal";
+import AnimalDetails from "./AnimalDetails";
 
 class SearchResult extends React.Component {
   constructor(props){
@@ -44,7 +45,8 @@ class SearchResult extends React.Component {
 
   //Modal Functions
   ModalShow = (animalId) => {
-    this.setState({animalSelected: animalId});
+    const selectedAnimal = this.props.animalList.filter(animal => animal.id === animalId);
+    this.setState({animalSelected: selectedAnimal[0]});
   }
   ModalHide = () => {
     this.setState({animalSelected: null});
@@ -59,7 +61,9 @@ class SearchResult extends React.Component {
       modalContent.push(<h1>Test</h1>);
       modalContent.push(<button type="button" onClick={() => console.log("edit:", this.state.animalSelected)}>Edit</button>);
       animalModal = (
-        <CustomModal show={true} handleClose={this.ModalHide}>{modalContent}</CustomModal>
+        <CustomModal show={true} handleClose={this.ModalHide}>
+          <AnimalDetails animal={this.state.animalSelected}/>
+        </CustomModal>
       );
     }
 
@@ -73,7 +77,6 @@ class SearchResult extends React.Component {
             animalFemale={animal.isfemale}
             animalBirthday={animal.birthday}
             animalWeight={animal.weightkilo}
-            // animalModal={() => console.log("animal: " + animal.id)}
             animalModal={() => this.ModalShow(animal.id)}
             key={animal.id} />)
         })}
