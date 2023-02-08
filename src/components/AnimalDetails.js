@@ -67,28 +67,28 @@ class AnimalDetails extends React.Component{
     for (let i = 0; i < (keysCount - 1); i++) {
       if (i === 1) {
         animalDetails.push(
-          <div style={this.styles.columnThreeSeven}>
+          <div key={"div" + i} style={this.styles.columnThreeSeven}>
             <h2 style={this.styles.center}>{keyTitles[i]}</h2>
             <p style={this.styles.center}>{animal[keyCodes[i]]} Kilograms</p>
           </div>
         );
       } else if (i === 2) {
         animalDetails.push(
-          <div style={this.styles.columnThreeSeven}>
+          <div key={"div" + i} style={this.styles.columnThreeSeven}>
             <h2 style={this.styles.center}>{keyTitles[i]}</h2>
             <p style={this.styles.center}>{this.GenderTranslate(animal[keyCodes[i]])}</p>
           </div>
         );
       } else if (i === 3) {
         animalDetails.push(
-          <div style={this.styles.columnThreeSeven}>
+          <div key={"div" + i} style={this.styles.columnThreeSeven}>
             <h2 style={this.styles.center}>{keyTitles[i]}</h2>
             <p style={this.styles.center}>{this.BirthdayTranslate(animal[keyCodes[i]])}</p>
           </div>
         );
       } else {
         animalDetails.push(
-          <div style={this.styles.columnThreeSeven}>
+          <div key={"div" + i} style={this.styles.columnThreeSeven}>
             <h2 style={this.styles.center}>{keyTitles[i]}</h2>
             <p style={this.styles.center}>{animal[keyCodes[i]]}</p>
           </div>
