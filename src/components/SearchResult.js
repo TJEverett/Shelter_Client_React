@@ -62,6 +62,7 @@ class SearchResult extends React.Component {
       animalModal = (
         <CustomModal show={true} handleClose={this.ModalHide}>
           <AnimalDetails animal={this.state.animalSelected}/>
+          <h4 style={{ display: "flex", justifyContent: "center", alignContent: "center" }}>To adopt please contact the shelter at (XXX)-XXX-XXXX</h4>
         </CustomModal>
       );
     }

@@ -106,7 +106,6 @@ class AnimalDetails extends React.Component{
         <div style={this.StyleListTable(this.state.animalKeyCount)}>
           {this.BuildAnimalDisplay(this.state.animal, this.state.animalKeyCount)}
         </div>
-        <h4 style={this.styles.center}>To adopt please contact the shelter at (XXX)-XXX-XXXX</h4>
       </React.Fragment>
     );
   };
