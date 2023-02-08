@@ -1,12 +1,13 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import AnimalModify from "./AnimalModify";
 import NavBar from "./NavBar";
 import SearchResult from "./SearchResult";
 
 function App() {
   //Temp Values
-  const authStatus = null;
-  // const authStatus = "1hr 52min";
+  // const authStatus = null;
+  const authStatus = "1hr 52min";
   const animalArray = [
     {
       id: "c1",
@@ -98,20 +99,20 @@ function App() {
           <SearchResult animalType="cat" animalList={animalArray} />
         </Route>
         <Route path="/cats/edit">
-          <p>edit/delete cat</p>
+          <AnimalModify editMode={true} species="cat" animal={animalArray[0]} />
         </Route>
         <Route path="/cats/new">
-          <p>new cat</p>
+          <AnimalModify editMode={false} species="cat" />
         </Route>
 
         <Route exact path="/dogs">
           <SearchResult animalType="dog" animalList={animalArray} />
         </Route>
         <Route path="/dogs/edit">
-          <p>edit/delete dog</p>
+          <AnimalModify editMode={true} species="dog" animal={animalArray[4]} />
         </Route>
         <Route path="/dogs/new">
-          <p>new dog</p>
+          <AnimalModify editMode={false} species="dog" />
         </Route>
 
         <Route exact path="/auth">
