@@ -116,6 +116,7 @@ class AnimalModify extends React.Component{
     let deleteAnimal = () => {console.log("Error in selected animal")};
     let submitAnimal = () => {console.log("Error in selected animal")};
     let animalDetails = [];
+    let animalDetailDisplay = null;
     if(this.state.species === "cat"){
       deleteAnimal = this.DeleteCat;
       if(this.state.edit === true){
@@ -134,6 +135,7 @@ class AnimalModify extends React.Component{
     if(this.state.edit === true){
       animalDetails.push(<AnimalDetails key="details" animal={this.state.animal} />);
       animalDetails.push(<div key="deleteButton" style={styles.center}><button onClick={this.ModalShow}>Delete</button></div>);
+      animalDetailDisplay = <div style={styles.borderBubble}>{animalDetails}</div>
     }
 
     return(
@@ -148,9 +150,7 @@ class AnimalModify extends React.Component{
         <div style={styles.borderBubble}>
           <AnimalCreateForm key={this.state.createCounter} species={this.state.species} animal={this.state.animal} submitFunc={submitAnimal} />
         </div>
-        <div style={styles.borderBubble}>
-          {animalDetails}
-        </div>
+        {animalDetailDisplay}
       </React.Fragment>
     );
   }
