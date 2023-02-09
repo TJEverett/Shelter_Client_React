@@ -91,7 +91,7 @@ function App() {
   return(
     <BrowserRouter>
       <NavBar authStatus={authStatus}/>
-      <div style={{height: "90px", width: "100vh"}}>
+      <div style={{height: "70px", width: "100vh"}}>
         <p>NavBar spacer</p>
       </div>
       <Switch>
