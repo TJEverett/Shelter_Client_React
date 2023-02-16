@@ -1,13 +1,15 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import AnimalModify from "./AnimalModify";
+import AuthModifyUsers from "./AuthModifyUsers";
+import AuthSignIn from "./AuthSignIn";
 import NavBar from "./NavBar";
 import SearchResult from "./SearchResult";
 
 function App() {
   //Temp Values
-  // const authStatus = null;
-  const authStatus = "1hr 52min";
+  const authStatus = null;
+  // const authStatus = "1hr 52min";
   const animalArray = [
     {
       id: "c1",
@@ -87,6 +89,16 @@ function App() {
     }
   ] //Will be replaced by API
 
+  function CheckAuth(newRoute){
+    if(authStatus === null){
+      return(
+        <Redirect to={newRoute} />
+      );
+    }else{
+      return(null);
+    }
+  }
+
   //Return Logic
   return(
     <BrowserRouter>
@@ -99,9 +111,11 @@ function App() {
           <SearchResult animalType="cat" animalList={animalArray} />
         </Route>
         <Route path="/cats/edit">
+          {CheckAuth("/cats")}
           <AnimalModify editMode={true} species="cat" animal={animalArray[0]} />
         </Route>
         <Route path="/cats/new">
+          {CheckAuth("/cats")}
           <AnimalModify editMode={false} species="cat" />
         </Route>
 
@@ -109,21 +123,24 @@ function App() {
           <SearchResult animalType="dog" animalList={animalArray} />
         </Route>
         <Route path="/dogs/edit">
+          {CheckAuth("/dogs")}
           <AnimalModify editMode={true} species="dog" animal={animalArray[4]} />
         </Route>
         <Route path="/dogs/new">
+          {CheckAuth("/dogs")}
           <AnimalModify editMode={false} species="dog" />
         </Route>
 
         <Route exact path="/auth">
-          <p>Sign in / Re-Sign in</p>
+          <AuthSignIn />
         </Route>
         <Route path="/auth/end">
           {/* log out function fires here */}
           <Redirect to="/auth" />
         </Route>
         <Route path="/auth/other">
-          <p>Account Modify</p>
+          {CheckAuth("/auth")}
+          <AuthModifyUsers />
         </Route>
 
         <Route path="/">
