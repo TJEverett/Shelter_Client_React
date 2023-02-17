@@ -13,6 +13,11 @@ function AnimalCreateForm(props){
       display: "flex",
       justifyContent: "center",
       alignContent: "center"
+    },
+    input: {
+      marginTop: "auto",
+      marginBottom: "auto",
+      marginRight: "auto"
     }
   };
 
@@ -58,7 +63,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Name</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="text"
                   name="name"
                   required={true}
@@ -69,7 +74,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Weight</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="number"
                   name="weight"
                   min={0}
@@ -81,7 +86,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Gender</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 {BuildGenderSelector(props.animal.isfemale)}
               </div>
             </div>
@@ -89,7 +94,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Birthday</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="date"
                   name="birthday"
                   defaultValue={BirthdayTranslate(props.animal.birthday)} />
@@ -99,7 +104,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Coloring</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="text"
                   name="coloring"
                   required={true}
@@ -110,7 +115,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Description</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="text"
                   name="description"
                   required={true}
@@ -134,7 +139,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Name</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="text"
                   name="name"
                   required={true}
@@ -145,7 +150,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Weight</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="number"
                   name="weight"
                   min={0}
@@ -157,7 +162,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Gender</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 {BuildGenderSelector(props.animal.isfemale)}
               </div>
             </div>
@@ -165,7 +170,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Birthday</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="date"
                   name="birthday"
                   defaultValue={BirthdayTranslate(props.animal.birthday)} />
@@ -175,7 +180,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Coloring</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="text"
                   name="coloring"
                   required={true}
@@ -186,7 +191,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Description</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="text"
                   name="description"
                   required={true}
@@ -197,7 +202,7 @@ function AnimalCreateForm(props){
               <div style={styles.center}>
                 <h2>Breed</h2>
               </div>
-              <div>
+              <div style={styles.input}>
                 <input type="text"
                   name="breed"
                   required={true}
