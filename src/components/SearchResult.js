@@ -55,14 +55,19 @@ class SearchResult extends React.Component {
   //Render Logic
   render() {
     let animalModal = null;
-    let modalContent = [];
+    let modalTag = [];
     if(this.state.animalSelected !== null){
-      modalContent.push(<h1>Test</h1>);
-      modalContent.push(<button type="button" onClick={() => console.log("edit:", this.state.animalSelected)}>Edit</button>);
+      if(true === true){// temp toggle for user logged in
+        modalTag.push(<button type="button" onClick={() => console.log("edit:", this.state.animalSelected)}>Edit</button>);
+      }else{
+        modalTag.push(<h4>To adopt please contact the shelter at (XXX)-XXX-XXXX</h4>);
+      }
       animalModal = (
         <CustomModal show={true} handleClose={this.ModalHide}>
           <AnimalDetails animal={this.state.animalSelected}/>
-          <h4 style={{ display: "flex", justifyContent: "center", alignContent: "center" }}>To adopt please contact the shelter at (XXX)-XXX-XXXX</h4>
+          <div style={{ display: "flex", justifyContent: "center", alignContent: "center" }}>
+            {modalTag}
+          </div>
         </CustomModal>
       );
     }
