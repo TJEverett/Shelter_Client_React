@@ -1,3 +1,5 @@
 export const AUTH_SAVE = "AUTH_SAVE"
 export const AUTH_DECREMENT = "AUTH_DECREMENT"
 export const AUTH_CLEAR = "AUTH_CLEAR"
+export const ERROR_SAVE = "ERROR_SAVE"
+export const ERROR_CLEAR = "ERROR_CLEAR"
