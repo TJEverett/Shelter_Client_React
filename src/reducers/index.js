@@ -1,10 +1,16 @@
 import { combineReducers } from "redux";
-import test_one from "./test_one";
-import test_two from "./test_two";
+import animalArrayReducer from "./animal-array-reducer";
+import animalObjectReducer from "./animal-object-reducer";
+import authReducer from "./auth-reducer";
+import errorReducer from "./error-reducer";
+import loadingReducer from "./loading-reducer";
 
 const rootReducer = combineReducers({
-  one: test_one,
-  two: test_two
+  animalArray: animalArrayReducer, // animalArray = (array)
+  animalObject: animalObjectReducer, // animalObject = (object)
+  auth: authReducer, // auth = {token: (string), timeRemaining: (int)}
+  error: errorReducer, // error = (string)
+  isLoading: loadingReducer // isLoading = (bool)
 });
 
 export default rootReducer;
