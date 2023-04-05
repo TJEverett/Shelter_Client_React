@@ -56,6 +56,7 @@ export const ApiAuthCall = (type, userInfo) => {
           body: JSON.stringify(params)
         };
         url = ApiUrl + "/login/login";
+        dispatch(loadingTrigger());
         fetch(url, options)
           .then(response => response.json())
           .then(
@@ -90,6 +91,58 @@ export const ApiAuthCall = (type, userInfo) => {
         fetch(url, options)
           .then(response => response.json())
           .then()
+          .catch((error) => {
+            dispatch(error) //error report
+          });
+        break;
+    }
+  }
+}
+
+export const ApiArrayCall = (type, dataObject) => {
+  return (dispatch) => {
+    let options = {method: "GET"};
+    let url;
+
+    switch (type) {
+      case "cat":
+        if(dataObject.animalAge = "under"){
+          options.isKitten = true;
+        }else if(dataObject.animalAge = "over"){
+          options.isKitten = false;
+        }
+        if(dataObject.animalGender !== "any"){
+          options.gender = dataObject.animalGender;
+        }
+        url = ApiUrl + "/cats";
+        dispatch(loadingTrigger());
+        fetch(url, options)
+          .then(response => response.json())
+          .then(
+            (jsonifiedResponse) => {
+              dispatch(authSave(jsonifiedResponse)); // save animal array
+            })
+          .catch((error) => {
+            dispatch(error) //error report
+          });
+        break;
+      case "dog":
+        if (dataObject.animalAge = "under") {
+          options.isPuppy = true;
+        } else if (dataObject.animalAge = "over") {
+          options.isPuppy = false;
+        }
+        if (dataObject.animalGender !== "any") {
+          options.gender = dataObject.animalGender;
+        }
+        url = ApiUrl + "/dogs";
+        dispatch(loadingTrigger());
+        fetch(url, options)
+          .then(response => response.json())
+          .then(
+            (jsonifiedResponse) => {
+              dispatch(authSave(jsonifiedResponse)); // save animal array
+            })
           .catch((error) => {
             dispatch(error) //error report
           });
