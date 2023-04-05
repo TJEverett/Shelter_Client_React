@@ -120,7 +120,7 @@ export const ApiArrayCall = (type, dataObject) => {
           .then(response => response.json())
           .then(
             (jsonifiedResponse) => {
-              dispatch(authSave(jsonifiedResponse)); // save animal array
+              dispatch(animalArraySave(jsonifiedResponse)); // save animal array
             })
           .catch((error) => {
             dispatch(errorSave(error)) //error report
@@ -141,7 +141,7 @@ export const ApiArrayCall = (type, dataObject) => {
           .then(response => response.json())
           .then(
             (jsonifiedResponse) => {
-              dispatch(authSave(jsonifiedResponse)); // save animal array
+              dispatch(animalArraySave(jsonifiedResponse)); // save animal array
             })
           .catch((error) => {
             dispatch(errorSave(error)) //error report
@@ -167,13 +167,24 @@ export const ApiObjectCall = (type, animalId) => {
           .then(response => response.json())
           .then(
             (jsonifiedResponse) => {
-              dispatch(authSave(jsonifiedResponse)); // save animal array
+              dispatch(animalObjectSave(jsonifiedResponse)); // save animal object
             })
           .catch((error) => {
             dispatch(errorSave(error)) //error report
           });
         break;
       case "dog":
+        url = ApiUrl + "/dogs";
+        dispatch(loadingTrigger());
+        fetch(url, options)
+          .then(response => response.json())
+          .then(
+            (jsonifiedResponse) => {
+              dispatch(animalObjectSave(jsonifiedResponse)); // save animal object
+            })
+          .catch((error) => {
+            dispatch(errorSave(error)) //error report
+          });
         break;
     }
   }
