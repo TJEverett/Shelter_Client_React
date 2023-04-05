@@ -64,7 +64,7 @@ export const ApiAuthCall = (type, userInfo) => {
               dispatch(authSave(jsonifiedResponse.token)); // save auth token
             })
           .catch((error) => {
-            dispatch(error) //error report
+            dispatch(errorSave(error)) //error report
           });
         break;
       case "new":
@@ -78,7 +78,7 @@ export const ApiAuthCall = (type, userInfo) => {
           .then(response => response.json())
           .then()
           .catch((error) => {
-            dispatch(error) //error report
+            dispatch(errorSave(error)) //error report
           });
         break;
       case "delete":
@@ -92,7 +92,7 @@ export const ApiAuthCall = (type, userInfo) => {
           .then(response => response.json())
           .then()
           .catch((error) => {
-            dispatch(error) //error report
+            dispatch(errorSave(error)) //error report
           });
         break;
     }
@@ -123,7 +123,7 @@ export const ApiArrayCall = (type, dataObject) => {
               dispatch(authSave(jsonifiedResponse)); // save animal array
             })
           .catch((error) => {
-            dispatch(error) //error report
+            dispatch(errorSave(error)) //error report
           });
         break;
       case "dog":
@@ -144,7 +144,7 @@ export const ApiArrayCall = (type, dataObject) => {
               dispatch(authSave(jsonifiedResponse)); // save animal array
             })
           .catch((error) => {
-            dispatch(error) //error report
+            dispatch(errorSave(error)) //error report
           });
         break;
     }
