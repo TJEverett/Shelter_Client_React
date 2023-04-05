@@ -150,3 +150,31 @@ export const ApiArrayCall = (type, dataObject) => {
     }
   }
 }
+
+export const ApiObjectCall = (type, animalId) => {
+  return (dispatch) => {
+    let options = {
+      method: "Get",
+      id: animalId
+    };
+    let url;
+
+    switch (type) {
+      case "cat":
+        url = ApiUrl + "/cats";
+        dispatch(loadingTrigger());
+        fetch(url, options)
+          .then(response => response.json())
+          .then(
+            (jsonifiedResponse) => {
+              dispatch(authSave(jsonifiedResponse)); // save animal array
+            })
+          .catch((error) => {
+            dispatch(errorSave(error)) //error report
+          });
+        break;
+      case "dog":
+        break;
+    }
+  }
+}
