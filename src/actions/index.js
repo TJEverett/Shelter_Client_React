@@ -189,3 +189,62 @@ export const ApiObjectCall = (type, animalId) => {
     }
   }
 }
+
+export const ApiCatsCall = (type, dataObject) => {
+  return (dispatch, getState) => {
+    const authToken = getState().auth.token;
+    const animalId = dataObject.id;
+    let options;
+    let url;
+
+    switch (type) {
+      case "post":
+        options = {
+          method: "POST",
+          Authorization: "Bearer " + authToken,
+          body: JSON.stringify(dataObject)
+        };
+        url = ApiUrl + "/cats";
+        fetch(url, options)
+          .then(response => response.json())
+          .then()
+          .catch((error) => {
+            dispatch(errorSave(error));
+          });
+        break;
+      case "put":
+        options = {
+          method: "PUT",
+          Authorization: "Bearer " + authToken,
+          body: JSON.stringify(dataObject)
+        };
+        url = ApiUrl + "/cats/" + animalId;
+        fetch(url, options)
+          .then(response => response.json())
+          .then()
+          .catch((error) => {
+            dispatch(errorSave(error));
+          });
+        break;
+      case "delete":
+        options = {
+          method: "DELETE",
+          Authorization: "Bearer " + authToken
+        };
+        url = ApiUrl + "/cats/" + animalId;
+        fetch(url, options)
+          .then(response => response.json())
+          .then(() => {
+            dispatch(animalObjectClear());
+          })
+          .catch((error) => {
+            dispatch(errorSave(error));
+          });
+        break;
+    }
+  }
+}
+
+//   /cats - "POST" - Create
+//   /cats/{int id} - "PUT" - Edit
+//   /cats/{int id} - "DELETE" - Delete
