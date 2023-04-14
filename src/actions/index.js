@@ -245,6 +245,57 @@ export const ApiCatsCall = (type, dataObject) => {
   }
 }
 
-//   /cats - "POST" - Create
-//   /cats/{int id} - "PUT" - Edit
-//   /cats/{int id} - "DELETE" - Delete
+export const ApiDogsCall = (type, dataObject) => {
+  return (dispatch, getState) => {
+    const authToken = getState().auth.token;
+    const animalId = dataObject.id;
+    let options;
+    let url;
+
+    switch (type) {
+      case "post":
+        options = {
+          method: "POST",
+          Authorization: "Bearer " + authToken,
+          body: JSON.stringify(dataObject)
+        };
+        url = ApiUrl + "/dogs";
+        fetch(url, options)
+          .then(response => response.json())
+          .then()
+          .catch((error) => {
+            dispatch(errorSave(error));
+          });
+        break;
+      case "put":
+        options = {
+          method: "PUT",
+          Authorization: "Bearer " + authToken,
+          body: JSON.stringify(dataObject)
+        };
+        url = ApiUrl + "/dogs/" + animalId;
+        fetch(url, options)
+          .then(response => response.json())
+          .then()
+          .catch((error) => {
+            dispatch(errorSave(error));
+          });
+        break;
+      case "delete":
+        options = {
+          method: "DELETE",
+          Authorization: "Bearer " + authToken
+        };
+        url = ApiUrl + "/dogs/" + animalId;
+        fetch(url, options)
+          .then(response => response.json())
+          .then(() => {
+            dispatch(animalObjectClear());
+          })
+          .catch((error) => {
+            dispatch(errorSave(error));
+          });
+        break;
+    }
+  }
+}
