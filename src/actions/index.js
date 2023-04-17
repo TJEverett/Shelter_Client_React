@@ -73,10 +73,10 @@ export const ApiAuthCall = (type, userInfo) => {
           Authorization: "Bearer " + authToken,
           body: JSON.stringify(params)
         };
-        url = ApiUrl + "/login/login";
+        url = ApiUrl + "/login/new";
         fetch(url, options)
           .then(response => response.json())
-          .then()
+          .then(errorSave("Account Created")) //respond through error message
           .catch((error) => {
             dispatch(errorSave(error)) //error report
           });
@@ -87,10 +87,10 @@ export const ApiAuthCall = (type, userInfo) => {
           Authorization: "Bearer " + authToken,
           body: JSON.stringify(params)
         };
-        url = ApiUrl + "/login/login";
+        url = ApiUrl + "/login/delete";
         fetch(url, options)
           .then(response => response.json())
-          .then()
+          .then(errorSave("Account Deleted")) //respond through error message
           .catch((error) => {
             dispatch(errorSave(error)) //error report
           });
@@ -102,7 +102,7 @@ export const ApiAuthCall = (type, userInfo) => {
 export const ApiArrayCall = (type, dataObject) => {
   return (dispatch) => {
     let options = {method: "GET"};
-    let url;
+    let url = ApiUrl;
 
     switch (type) {
       case "cat":
@@ -115,16 +115,6 @@ export const ApiArrayCall = (type, dataObject) => {
           options.gender = dataObject.animalGender;
         }
         url = ApiUrl + "/cats";
-        dispatch(loadingTrigger());
-        fetch(url, options)
-          .then(response => response.json())
-          .then(
-            (jsonifiedResponse) => {
-              dispatch(animalArraySave(jsonifiedResponse)); // save animal array
-            })
-          .catch((error) => {
-            dispatch(errorSave(error)) //error report
-          });
         break;
       case "dog":
         if (dataObject.animalAge = "under") {
@@ -136,57 +126,46 @@ export const ApiArrayCall = (type, dataObject) => {
           options.gender = dataObject.animalGender;
         }
         url = ApiUrl + "/dogs";
-        dispatch(loadingTrigger());
-        fetch(url, options)
-          .then(response => response.json())
-          .then(
-            (jsonifiedResponse) => {
-              dispatch(animalArraySave(jsonifiedResponse)); // save animal array
-            })
-          .catch((error) => {
-            dispatch(errorSave(error)) //error report
-          });
         break;
     }
+    dispatch(loadingTrigger());
+    fetch(url, options)
+      .then(response => response.json())
+      .then(
+        (jsonifiedResponse) => {
+          dispatch(animalArraySave(jsonifiedResponse)); // save animal array
+        })
+      .catch((error) => {
+        dispatch(errorSave(error)) //error report
+      });
   }
 }
 
 export const ApiObjectCall = (type, animalId) => {
   return (dispatch) => {
     let options = {
-      method: "Get",
-      id: animalId
+      method: "Get"
     };
-    let url;
+    let url = ApiUrl;
 
     switch (type) {
       case "cat":
-        url = ApiUrl + "/cats";
-        dispatch(loadingTrigger());
-        fetch(url, options)
-          .then(response => response.json())
-          .then(
-            (jsonifiedResponse) => {
-              dispatch(animalObjectSave(jsonifiedResponse)); // save animal object
-            })
-          .catch((error) => {
-            dispatch(errorSave(error)) //error report
-          });
+        url = ApiUrl + "/cats/" + animalId;
         break;
       case "dog":
-        url = ApiUrl + "/dogs";
-        dispatch(loadingTrigger());
-        fetch(url, options)
-          .then(response => response.json())
-          .then(
-            (jsonifiedResponse) => {
-              dispatch(animalObjectSave(jsonifiedResponse)); // save animal object
-            })
-          .catch((error) => {
-            dispatch(errorSave(error)) //error report
-          });
+        url = ApiUrl + "/dogs/" + animalId;
         break;
     }
+    dispatch(loadingTrigger());
+    fetch(url, options)
+      .then(response => response.json())
+      .then(
+        (jsonifiedResponse) => {
+          dispatch(animalObjectSave(jsonifiedResponse)); // save animal object
+        })
+      .catch((error) => {
+        dispatch(errorSave(error)) //error report
+      });
   }
 }
 
@@ -207,9 +186,9 @@ export const ApiCatsCall = (type, dataObject) => {
         url = ApiUrl + "/cats";
         fetch(url, options)
           .then(response => response.json())
-          .then()
+          .then(errorSave("Animal Added to Database")) //respond through error message
           .catch((error) => {
-            dispatch(errorSave(error));
+            dispatch(errorSave(error)); //error report
           });
         break;
       case "put":
@@ -221,9 +200,9 @@ export const ApiCatsCall = (type, dataObject) => {
         url = ApiUrl + "/cats/" + animalId;
         fetch(url, options)
           .then(response => response.json())
-          .then()
+          .then(errorSave("Animal Updated")) //respond through error message
           .catch((error) => {
-            dispatch(errorSave(error));
+            dispatch(errorSave(error)); //error report
           });
         break;
       case "delete":
@@ -235,10 +214,10 @@ export const ApiCatsCall = (type, dataObject) => {
         fetch(url, options)
           .then(response => response.json())
           .then(() => {
-            dispatch(animalObjectClear());
+            dispatch(animalObjectClear()); //clear animal selection
           })
           .catch((error) => {
-            dispatch(errorSave(error));
+            dispatch(errorSave(error)); //error report
           });
         break;
     }
@@ -262,9 +241,9 @@ export const ApiDogsCall = (type, dataObject) => {
         url = ApiUrl + "/dogs";
         fetch(url, options)
           .then(response => response.json())
-          .then()
+          .then(errorSave("Animal Added to Database")) //respond through error message
           .catch((error) => {
-            dispatch(errorSave(error));
+            dispatch(errorSave(error)); //error report
           });
         break;
       case "put":
@@ -276,9 +255,9 @@ export const ApiDogsCall = (type, dataObject) => {
         url = ApiUrl + "/dogs/" + animalId;
         fetch(url, options)
           .then(response => response.json())
-          .then()
+          .then(errorSave("Animal Updated")) //respond through error message
           .catch((error) => {
-            dispatch(errorSave(error));
+            dispatch(errorSave(error)); //error report
           });
         break;
       case "delete":
@@ -290,10 +269,10 @@ export const ApiDogsCall = (type, dataObject) => {
         fetch(url, options)
           .then(response => response.json())
           .then(() => {
-            dispatch(animalObjectClear());
+            dispatch(animalObjectClear()); //clear animal selection
           })
           .catch((error) => {
-            dispatch(errorSave(error));
+            dispatch(errorSave(error)); //error report
           });
         break;
     }
