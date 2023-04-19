@@ -95,6 +95,8 @@ export const ApiAuthCall = (type, userInfo) => {
             dispatch(errorSave(error)) //error report
           });
         break;
+      default:
+        break;
     }
   }
 }
@@ -106,9 +108,9 @@ export const ApiArrayCall = (type, dataObject) => {
 
     switch (type) {
       case "cat":
-        if(dataObject.animalAge = "under"){
+        if(dataObject.animalAge === "under"){
           options.isKitten = true;
-        }else if(dataObject.animalAge = "over"){
+        }else if(dataObject.animalAge === "over"){
           options.isKitten = false;
         }
         if(dataObject.animalGender !== "any"){
@@ -117,15 +119,17 @@ export const ApiArrayCall = (type, dataObject) => {
         url = ApiUrl + "/cats";
         break;
       case "dog":
-        if (dataObject.animalAge = "under") {
+        if (dataObject.animalAge === "under") {
           options.isPuppy = true;
-        } else if (dataObject.animalAge = "over") {
+        } else if (dataObject.animalAge === "over") {
           options.isPuppy = false;
         }
         if (dataObject.animalGender !== "any") {
           options.gender = dataObject.animalGender;
         }
         url = ApiUrl + "/dogs";
+        break;
+      default:
         break;
     }
     dispatch(loadingTrigger());
@@ -154,6 +158,8 @@ export const ApiObjectCall = (type, animalId) => {
         break;
       case "dog":
         url = ApiUrl + "/dogs/" + animalId;
+        break;
+      default:
         break;
     }
     dispatch(loadingTrigger());
@@ -220,6 +226,8 @@ export const ApiCatsCall = (type, dataObject) => {
             dispatch(errorSave(error)); //error report
           });
         break;
+      default:
+        break;
     }
   }
 }
@@ -274,6 +282,8 @@ export const ApiDogsCall = (type, dataObject) => {
           .catch((error) => {
             dispatch(errorSave(error)); //error report
           });
+        break;
+      default:
         break;
     }
   }
