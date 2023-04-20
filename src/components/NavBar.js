@@ -1,9 +1,9 @@
 import React from "react";
 import "../CSS/DropMenu.css";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-function NavBar(props){
+function NavBar(){
   //Styles Object
   const styles = {
     general: {
@@ -23,8 +23,12 @@ function NavBar(props){
     }
   };
 
+  //Redux Interaction
+  const customEqual = (oldValue, newValue) => oldValue === newValue;
+  const authMinutes = useSelector((state) => state.auth.timeRemaining, customEqual);
+
   //Return Logic
-  if(props.authStatus === null){
+  if(authMinutes === null){
     return(
       <div style={{ ...styles.general, ...styles.coloring }}>
         <div style={styles.table}>
@@ -70,7 +74,7 @@ function NavBar(props){
             </div>
           </div>
           <div className="dropdown">
-            <button className="dropButton" style={styles.coloring}>Auth: {props.authStatus}</button>
+            <button className="dropButton" style={styles.coloring}>Auth: {authMinutes} Minutes</button>
             <div className="dropdown-content">
               <Link to="/auth" style={styles.coloring}>Renew Auth</Link>
               <Link to="/auth/other" style={styles.coloring}>Create User</Link>
@@ -83,9 +87,5 @@ function NavBar(props){
     )
   }
 };
-
-NavBar.propTypes = {
-  authStatus: PropTypes.string
-}
 
 export default NavBar;

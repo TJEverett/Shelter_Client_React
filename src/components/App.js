@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 import AnimalModify from "./AnimalModify";
 import AuthModifyUsers from "./AuthModifyUsers";
 import AuthSignIn from "./AuthSignIn";
@@ -8,7 +9,7 @@ import SearchResult from "./SearchResult";
 
 function App() {
   //Temp Values
-  const authStatus = null;
+  // const authStatus = null;
   // const authStatus = "1hr 52min";
   const animalArray = [
     {
@@ -90,7 +91,8 @@ function App() {
   ] //Will be replaced by API
 
   function CheckAuth(newRoute){
-    if(authStatus === null){
+    const auth = useSelector((state) => state.auth.token);
+    if(auth === null){
       return(
         <Redirect to={newRoute} />
       );
@@ -102,7 +104,7 @@ function App() {
   //Return Logic
   return(
     <BrowserRouter>
-      <NavBar authStatus={authStatus}/>
+      <NavBar />
       <div style={{height: "70px", width: "100vh"}}>
         <p>NavBar spacer</p>
       </div>
