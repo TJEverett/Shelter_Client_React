@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { ApiAuthCall } from "../actions/index";
 import AuthForm from "./AuthForm";
 
 function AuthSignIn(){
@@ -17,13 +19,16 @@ function AuthSignIn(){
     }
   };
 
+  const dispatch = useDispatch();
+
   function DoSignIn(event){
     event.preventDefault();
-    let attempt = {};
-    attempt.username = event.target.username.value;
-    attempt.password = event.target.password.value;
-    console.log("User Login Credentials:");
-    console.log(attempt);
+    let attempt = {
+      username: event.target.username.value,
+      password: event.target.password.value
+    };
+    let action = ApiAuthCall("login", attempt);
+    dispatch(action);
   }
 
   return(
