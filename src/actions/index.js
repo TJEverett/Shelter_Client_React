@@ -51,7 +51,6 @@ export const ApiAuthCall = (type, userInfo) => {
 
     switch (type) {
       case "login":
-        console.log(JSON.stringify(params));
         options = {
           method: "POST",
           headers: {
