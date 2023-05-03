@@ -43,16 +43,21 @@ export const ApiAuthCall = (type, userInfo) => {
   return (dispatch, getState) => {
     const authToken = getState().auth.token;
     const params = {
-      "username": userInfo.username,
-      "password": userInfo.password
+      username: userInfo.username,
+      password: userInfo.password
     };
     let options;
     let url;
 
     switch (type) {
       case "login":
+        console.log(JSON.stringify(params));
         options = {
           method: "POST",
+          headers: {
+            "Accept": "application/json, text/plain",
+            "Content-type": "application/json"
+          },
           body: JSON.stringify(params)
         };
         url = ApiUrl + "/login/login";
@@ -70,6 +75,10 @@ export const ApiAuthCall = (type, userInfo) => {
       case "new":
         options = {
           method: "POST",
+          headers: {
+            "Accept": "application/json, text/plain",
+            "Content-type": "application/json"
+          },
           Authorization: "Bearer " + authToken,
           body: JSON.stringify(params)
         };
@@ -84,6 +93,10 @@ export const ApiAuthCall = (type, userInfo) => {
       case "delete":
         options = {
           method: "DELETE",
+          headers: {
+            "Accept": "application/json, text/plain",
+            "Content-type": "application/json"
+          },
           Authorization: "Bearer " + authToken,
           body: JSON.stringify(params)
         };
@@ -103,7 +116,13 @@ export const ApiAuthCall = (type, userInfo) => {
 
 export const ApiArrayCall = (type, dataObject) => {
   return (dispatch) => {
-    let options = {method: "GET"};
+    let options = {
+      method: "GET",
+      headers: {
+        "Accept": "application/json, text/plain",
+        "Content-type": "application/json"
+      }
+    };
     let url = ApiUrl;
 
     switch (type) {
@@ -148,7 +167,11 @@ export const ApiArrayCall = (type, dataObject) => {
 export const ApiObjectCall = (type, animalId) => {
   return (dispatch) => {
     let options = {
-      method: "Get"
+      method: "Get",
+      headers: {
+        "Accept": "application/json, text/plain",
+        "Content-type": "application/json"
+      },
     };
     let url = ApiUrl;
 
@@ -186,6 +209,10 @@ export const ApiCatsCall = (type, dataObject) => {
       case "post":
         options = {
           method: "POST",
+          headers: {
+            "Accept": "application/json, text/plain",
+            "Content-type": "application/json"
+          },
           Authorization: "Bearer " + authToken,
           body: JSON.stringify(dataObject)
         };
@@ -200,6 +227,10 @@ export const ApiCatsCall = (type, dataObject) => {
       case "put":
         options = {
           method: "PUT",
+          headers: {
+            "Accept": "application/json, text/plain",
+            "Content-type": "application/json"
+          },
           Authorization: "Bearer " + authToken,
           body: JSON.stringify(dataObject)
         };
@@ -214,6 +245,10 @@ export const ApiCatsCall = (type, dataObject) => {
       case "delete":
         options = {
           method: "DELETE",
+          headers: {
+            "Accept": "application/json, text/plain",
+            "Content-type": "application/json"
+          },
           Authorization: "Bearer " + authToken
         };
         url = ApiUrl + "/cats/" + animalId;
@@ -243,6 +278,10 @@ export const ApiDogsCall = (type, dataObject) => {
       case "post":
         options = {
           method: "POST",
+          headers: {
+            "Accept": "application/json, text/plain",
+            "Content-type": "application/json"
+          },
           Authorization: "Bearer " + authToken,
           body: JSON.stringify(dataObject)
         };
@@ -257,6 +296,10 @@ export const ApiDogsCall = (type, dataObject) => {
       case "put":
         options = {
           method: "PUT",
+          headers: {
+            "Accept": "application/json, text/plain",
+            "Content-type": "application/json"
+          },
           Authorization: "Bearer " + authToken,
           body: JSON.stringify(dataObject)
         };
@@ -271,6 +314,10 @@ export const ApiDogsCall = (type, dataObject) => {
       case "delete":
         options = {
           method: "DELETE",
+          headers: {
+            "Accept": "application/json, text/plain",
+            "Content-type": "application/json"
+          },
           Authorization: "Bearer " + authToken
         };
         url = ApiUrl + "/dogs/" + animalId;
