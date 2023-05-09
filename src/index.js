@@ -5,9 +5,12 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers/index';
+import { authDecrement, loopAt } from './actions/index';
 import App from './components/App';
 
 const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+
+store.dispatch(loopAt(authDecrement(), 60000));
 
 store.subscribe(() => 
   console.log(store.getState())
