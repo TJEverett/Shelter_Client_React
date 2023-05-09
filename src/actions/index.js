@@ -72,7 +72,13 @@ export const ApiAuthCall = (type, userInfo) => {
         url = ApiUrl + "/login/login";
         dispatch(loadingTrigger());
         fetch(url, options)
-          .then(response => response.json())
+          .then((response) => {
+            if(response.status === 200){
+              return response.json();
+            } else {
+              throw new Error(response.status);
+            }
+          })
           .then(
             (jsonifiedResponse) => {
               dispatch(authSave(jsonifiedResponse.token)); // save auth token
