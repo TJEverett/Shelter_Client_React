@@ -1,6 +1,6 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { ApiAuthCall } from "../actions/index";
+import { useDispatch, useSelector } from "react-redux";
+import { ApiAuthCall, errorClear} from "../actions/index";
 import AuthForm from "./AuthForm";
 
 function AuthSignIn(){
@@ -19,7 +19,10 @@ function AuthSignIn(){
     }
   };
 
+  //Redux Connection
+  const customEqual = (oldValue, newValue) => oldValue === newValue;
   const dispatch = useDispatch();
+  const errorMessage = useSelector((state) => state.error, customEqual);
 
   function DoSignIn(event){
     event.preventDefault();
@@ -31,8 +34,18 @@ function AuthSignIn(){
     dispatch(action);
   }
 
+  //Render Logic
+  function RenderAlert(){
+    if(errorMessage !== null){
+      alert("Failure due to: \n" + errorMessage);
+      const action = errorClear();
+      dispatch(action);
+    }
+  }
+
   return(
     <React.Fragment>
+      {RenderAlert()}
       <div style={styles.grid}>
         <div />
         <div style={styles.borderBubble}>
