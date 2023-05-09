@@ -17,7 +17,7 @@ describe("authReducer", () => {
     });
   });
 
-  test("AUTH_SAVE should save auth token and set remaining time to 179", () => {
+  test("AUTH_SAVE should save auth token string and set remaining time to 179", () => {
     action = {
       type: c.AUTH_SAVE,
       token: "123abc",
@@ -26,6 +26,30 @@ describe("authReducer", () => {
     expect(authReducer(defaultState, action)).toEqual({
       token: "123abc",
       timeRemaining: 179
+    });
+  });
+
+  test("AUTH_SAVE should return default state if token is null", () => {
+    action = {
+      type: c.AUTH_SAVE,
+      token: null,
+    };
+
+    expect(authReducer(defaultState, action)).toEqual({
+      token: null,
+      timeRemaining: null
+    });
+  });
+
+  test("AUTH_SAVE should return default state if token is undefined", () => {
+    action = {
+      type: c.AUTH_SAVE,
+      token: undefined,
+    };
+
+    expect(authReducer(defaultState, action)).toEqual({
+      token: null,
+      timeRemaining: null
     });
   });
 

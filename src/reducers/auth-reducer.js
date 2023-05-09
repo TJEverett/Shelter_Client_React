@@ -21,10 +21,17 @@ export default (state = defaultState, action) => {
     case c.AUTH_CLEAR:
       return defaultState;
     case c.AUTH_SAVE:
-      return {
-        token: action.token,
-        timeRemaining: 179
-      };
+      switch(action.token){
+        case null:
+          return defaultState;
+        case undefined:
+          return defaultState;
+        default:
+          return {
+            token: action.token,
+            timeRemaining: 179
+          };
+      }
     default:
       return state;
   }
