@@ -36,6 +36,16 @@ export const loadingTrigger = () => ({
   type: c.LOADING_TRIGGER
 });
 
+//Random Async
+export const loopAt = (action, delay) => {
+  return (dispatch) => {
+    const event = setInterval(() => {
+      dispatch(action)
+    }, delay);
+    return event
+  }
+}
+
 //API Calls
 const ApiUrl = "http://localhost:5000/api";
 
