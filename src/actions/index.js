@@ -92,15 +92,14 @@ export const ApiAuthCall = (type, userInfo) => {
           method: "POST",
           headers: {
             "Accept": "application/json, text/plain",
-            "Content-type": "application/json"
+            "Content-type": "application/json",
+            "Authorization": "Bearer " + authToken
           },
-          Authorization: "Bearer " + authToken,
           body: JSON.stringify(params)
         };
         url = ApiUrl + "/login/new";
         fetch(url, options)
-          .then(response => response.json())
-          .then(errorSave("Account Created")) //respond through error message
+          .then((response) => dispatch(errorSave("Account Created"))) //respond through error message
           .catch((error) => {
             dispatch(errorSave(error)) //error report
           });
@@ -110,15 +109,14 @@ export const ApiAuthCall = (type, userInfo) => {
           method: "DELETE",
           headers: {
             "Accept": "application/json, text/plain",
-            "Content-type": "application/json"
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
-          Authorization: "Bearer " + authToken,
           body: JSON.stringify(params)
         };
         url = ApiUrl + "/login/delete";
         fetch(url, options)
-          .then(response => response.json())
-          .then(errorSave("Account Deleted")) //respond through error message
+          .then((response) => dispatch(errorSave("Account Deleted"))) //respond through error message
           .catch((error) => {
             dispatch(errorSave(error)) //error report
           });

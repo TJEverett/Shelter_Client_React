@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ApiAuthCall, errorClear } from "../actions/index";
 import AuthForm from "./AuthForm";
 
 function AuthModifyUsers(){
@@ -16,26 +18,43 @@ function AuthModifyUsers(){
       padding: "10px"
     }
   };
+
+  //Redux Connection
+  const customEqual = (oldValue, newValue) => oldValue === newValue;
+  const dispatch = useDispatch();
+  const errorMessage = useSelector((state) => state.error, customEqual);
   
   function DoAuthCreate(event) {
     event.preventDefault();
-    let attempt = {};
-    attempt.username = event.target.username.value;
-    attempt.password = event.target.password.value;
-    console.log("Create User Login Credentials:");
-    console.log(attempt);
+    let attempt = {
+      username: event.target.username.value,
+      password: event.target.password.value
+    };
+    let action = ApiAuthCall("new", attempt);
+    dispatch(action);
   }
   function DoAuthDelete(event) {
     event.preventDefault();
-    let attempt = {};
-    attempt.username = event.target.username.value;
-    attempt.password = event.target.password.value;
-    console.log("Delete User Login Credentials:");
-    console.log(attempt);
+    let attempt = {
+      username: event.target.username.value,
+      password: event.target.password.value
+    };
+    let action = ApiAuthCall("delete", attempt);
+    dispatch(action);
+  }
+
+  //Render Logic
+  function RenderAlert(){
+    if(errorMessage !== null){
+      alert(errorMessage);
+      const action = errorClear();
+      dispatch(action);
+    }
   }
 
   return(
     <React.Fragment>
+      {RenderAlert()}
       <div style={styles.grid}>
         <div />
         <div style={styles.borderBubble}>
