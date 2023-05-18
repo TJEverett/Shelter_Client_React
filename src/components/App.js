@@ -136,10 +136,6 @@ function App() {
         <Route exact path="/auth">
           <AuthSignIn />
         </Route>
-        <Route path="/auth/end">
-          {/* log out function fires here */}
-          <Redirect to="/auth" />
-        </Route>
         <Route path="/auth/other">
           {CheckAuth("/auth")}
           <AuthModifyUsers />

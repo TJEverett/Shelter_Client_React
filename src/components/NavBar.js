@@ -1,7 +1,8 @@
 import React from "react";
 import "../CSS/DropMenu.css";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { authClear } from "../actions/index";
 
 function NavBar(){
   //Styles Object
@@ -26,6 +27,12 @@ function NavBar(){
   //Redux Interaction
   const customEqual = (oldValue, newValue) => oldValue === newValue;
   const authMinutes = useSelector((state) => state.auth.timeRemaining, customEqual);
+  const dispatch = useDispatch();
+
+  function Logout() {
+    const action = authClear();
+    dispatch(action);
+  }
 
   //Return Logic
   if(authMinutes === null){
@@ -79,7 +86,7 @@ function NavBar(){
               <Link to="/auth" style={styles.coloring}>Renew Auth</Link>
               <Link to="/auth/other" style={styles.coloring}>Create User</Link>
               <Link to="/auth/other" style={styles.coloring}>Delete User</Link>
-              <Link to="/auth/end" style={styles.coloring}>Log Out</Link>
+              <Link to="/auth" style={styles.coloring} onClick={Logout}>Log Out</Link>
             </div>
           </div>
         </div>
