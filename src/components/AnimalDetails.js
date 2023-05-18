@@ -62,7 +62,7 @@ class AnimalDetails extends React.Component{
   //Element Functions
   BuildAnimalDisplay = (animal, keysCount) => {
     const keyTitles = ["Name", "Weight", "Gender", "Birthday", "Coloring", "Description", "Breed"];
-    const keyCodes = ["name", "weightkilo", "isfemale", "birthday", "coloring", "description", "breed"];
+    const keyCodes = ["name", "weightKilo", "isFemale", "birthday", "coloring", "description", "breed"];
     let animalDetails = [];
     for (let i = 0; i < (keysCount - 1); i++) {
       if (i === 1) {
