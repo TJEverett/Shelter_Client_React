@@ -1,70 +1,79 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { ApiArrayCall, ApiObjectCall, animalArrayClear, animalObjectClear } from "../actions/index";
 import SearchForm from "./SearchForm";
 import SearchAnimal from "./SearchAnimal";
 import CustomModal from "./CustomModal";
 import AnimalDetails from "./AnimalDetails";
+import { Redirect } from "react-router-dom";
 
 class SearchResult extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       animalType: props.animalType,
-      animalList: [],
-      animalSelected: null
+      redirectEdit: false
     };
   }
 
+  //Component Lifecycle
   componentDidUpdate() {
     if(this.props.animalType !== this.state.animalType){
       this.setState({animalType: this.props.animalType, animalList: []});
+      const { dispatch } = this.props;
+      const action = animalArrayClear();
+      dispatch(action);
     }
   }
-
-  //Testing Function
-  filterSearch = (animalType, ageCompare, gender) => { //To be replaced by calls to database
-    let newAnimalList = [];
-    if(animalType === "dog"){
-      newAnimalList = this.props.animalList.filter(animal => animal.id.charAt(0) === "d");
-    } else if(animalType === "cat"){
-      newAnimalList = this.props.animalList.filter(animal => animal.id.charAt(0) === "c");
-    }
-    if(ageCompare === "under"){
-      newAnimalList = newAnimalList.filter(animal => animal.birthday.substring(0, 4) === "2022");
-    } else if(ageCompare === "over"){
-      newAnimalList = newAnimalList.filter(animal => animal.birthday.substring(0, 4) !== "2022");
-    } //else all animals continue
-    if(gender === "female"){
-      newAnimalList = newAnimalList.filter(animal => animal.isfemale === true);
-    } else if(gender ==="male"){
-      newAnimalList = newAnimalList.filter(animal => animal.isfemale === false);
-    } //else all animals continue
-    this.setState({animalList: newAnimalList});
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    const action = animalArrayClear();
+    dispatch(action);
   }
 
-  //Modal Functions
-  ModalShow = (animalId) => {
-    const selectedAnimal = this.props.animalList.filter(animal => animal.id === animalId);
-    this.setState({animalSelected: selectedAnimal[0]});
-  }
-  ModalHide = () => {
-    this.setState({animalSelected: null});
+  //State Functions
+  redirectToEdit = () => {
+    this.setState({redirectEdit: true});
   }
 
+  //Redux Function
+  apiSearchArray = (animalType, ageCompare, gender) => {
+    const { dispatch } = this.props;
+    let data = {
+      animalAge: ageCompare,
+      animalGender: gender
+    };
+    let actionCall = { type: null }; //Blank default action
+
+    if (animalType === "dog"){ actionCall = ApiArrayCall("dog", data) }
+    else if (animalType === "cat"){ actionCall = ApiArrayCall("cat", data) };
+    dispatch(actionCall);
+  }
+  apiSearchSingle = (animalId) => {
+    const { dispatch } = this.props;
+    const action = ApiObjectCall(this.state.animalType, animalId);
+    dispatch(action);
+  }
+  clearSingle = () => {
+    const { dispatch } = this.props;
+    const action = animalObjectClear();
+    dispatch(action);
+  }
 
   //Render Logic
   render() {
     let animalModal = null;
     let modalTag = [];
-    if(this.state.animalSelected !== null){
-      if(true === true){// temp toggle for user logged in
-        modalTag.push(<button type="button" onClick={() => console.log("edit:", this.state.animalSelected)}>Edit</button>);
+    if(this.props.animalSelected.name !== undefined){
+      if(this.props.auth){
+        modalTag.push(<button type="button" onClick={this.redirectToEdit}>Edit</button>);
       }else{
         modalTag.push(<h4>To adopt please contact the shelter at (XXX)-XXX-XXXX</h4>);
       }
       animalModal = (
-        <CustomModal show={true} handleClose={this.ModalHide}>
-          <AnimalDetails animal={this.state.animalSelected}/>
+        <CustomModal show={true} handleClose={this.clearSingle}>
+          <AnimalDetails animal={this.props.animalSelected}/>
           <div style={{ display: "flex", justifyContent: "center", alignContent: "center" }}>
             {modalTag}
           </div>
@@ -72,27 +81,42 @@ class SearchResult extends React.Component {
       );
     }
 
-    return(
-      <React.Fragment>
-        {animalModal}
-        <SearchForm animalType={this.state.animalType} submitFunc={this.filterSearch} />
-        <hr />
-        {this.state.animalList.map((animal) => {
-          return (<SearchAnimal animalName={animal.name}
-            animalFemale={animal.isfemale}
-            animalBirthday={animal.birthday}
-            animalWeight={animal.weightkilo}
-            animalModal={() => this.ModalShow(animal.id)}
-            key={animal.id} />)
-        })}
-      </React.Fragment>
-    );
+    if(this.state.redirectEdit){
+      return(
+        <Redirect to={`${this.state.animalType}s/edit`} />
+      );
+    }else{
+      return(
+        <React.Fragment>
+          {animalModal}
+          <SearchForm animalType={this.state.animalType} submitFunc={this.apiSearchArray} />
+          <hr />
+          {this.props.animalList.map((animal) => {
+            return (<SearchAnimal animalName={animal.name}
+              animalFemale={animal.isFemale}
+              animalBirthday={animal.birthday}
+              animalWeight={animal.weightKilo}
+              animalModal={() => this.apiSearchSingle(animal[`${this.state.animalType}Id`])}
+              key={animal[`${this.state.animalType}Id`]} />)
+          })}
+        </React.Fragment>
+      );
+    }
   }
 }
 
 SearchResult.propTypes = {
-  animalType: PropTypes.string,
-  animalList: PropTypes.arrayOf(PropTypes.object)
+  animalType: PropTypes.string
 };
+
+const mapStateToProps = (state) => {
+  return {
+    animalList: state.animalArray,
+    animalSelected: state.animalObject,
+    auth: (state.auth.token !== null)
+  }
+}
+
+SearchResult = connect(mapStateToProps)(SearchResult);
 
 export default SearchResult;

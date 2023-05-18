@@ -110,7 +110,7 @@ function App() {
       </div>
       <Switch>
         <Route exact path="/cats">
-          <SearchResult animalType="cat" animalList={animalArray} />
+          <SearchResult animalType="cat" />
         </Route>
         <Route path="/cats/edit">
           {CheckAuth("/cats")}
@@ -122,7 +122,7 @@ function App() {
         </Route>
 
         <Route exact path="/dogs">
-          <SearchResult animalType="dog" animalList={animalArray} />
+          <SearchResult animalType="dog" />
         </Route>
         <Route path="/dogs/edit">
           {CheckAuth("/dogs")}
