@@ -129,6 +129,7 @@ export const ApiAuthCall = (type, userInfo) => {
 
 export const ApiArrayCall = (type, dataObject) => {
   return (dispatch) => {
+    let params = {};
     let options = {
       method: "GET",
       headers: {
@@ -141,25 +142,25 @@ export const ApiArrayCall = (type, dataObject) => {
     switch (type) {
       case "cat":
         if(dataObject.animalAge === "under"){
-          options.isKitten = true;
+          params.isKitten = "true";
         }else if(dataObject.animalAge === "over"){
-          options.isKitten = false;
+          params.isKitten = "false";
         }
         if(dataObject.animalGender !== "any"){
-          options.gender = dataObject.animalGender;
+          params.gender = dataObject.animalGender;
         }
-        url = ApiUrl + "/cats";
+        url = ApiUrl + "/cats?" + new URLSearchParams(params);
         break;
       case "dog":
         if (dataObject.animalAge === "under") {
-          options.isPuppy = true;
+          params.isPuppy = true;
         } else if (dataObject.animalAge === "over") {
-          options.isPuppy = false;
+          params.isPuppy = false;
         }
         if (dataObject.animalGender !== "any") {
-          options.gender = dataObject.animalGender;
+          params.gender = dataObject.animalGender;
         }
-        url = ApiUrl + "/dogs";
+        url = ApiUrl + "/dogs?" + new URLSearchParams(params);
         break;
       default:
         break;
