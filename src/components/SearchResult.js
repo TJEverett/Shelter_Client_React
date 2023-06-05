@@ -67,9 +67,9 @@ class SearchResult extends React.Component {
     let modalTag = [];
     if(this.props.animalSelected.name !== undefined){
       if(this.props.auth){
-        modalTag.push(<button type="button" onClick={this.redirectToEdit}>Edit</button>);
+        modalTag.push(<button type="button" onClick={this.redirectToEdit} key={"editButton"}>Edit</button>);
       }else{
-        modalTag.push(<h4>To adopt please contact the shelter at (XXX)-XXX-XXXX</h4>);
+        modalTag.push(<h4 key={"contactInfo"}>To adopt please contact the shelter at (XXX)-XXX-XXXX</h4>);
       }
       animalModal = (
         <CustomModal show={true} handleClose={this.clearSingle}>
@@ -85,7 +85,8 @@ class SearchResult extends React.Component {
       return(
         <Redirect to={`${this.state.animalType}s/edit`} />
       );
-    }else{
+    }
+    if(true){
       return(
         <React.Fragment>
           {animalModal}
