@@ -43,14 +43,21 @@ function AnimalCreateForm(props){
   //Element Functions
   function BuildGenderSelector(isFemale){
     let options = [];
-    if(isFemale === false){
-      options.push(<option key="male" value={false} defaultValue={true}>Male</option>);
-      options.push(<option key="female" value={true}>Female</option>);
+    let genderSelectorDefaultValue = "selectGender";
+    if(isFemale === undefined){
+      options.push(<option key="default" value="selectGender" disabled hidden>Select Gender</option>);
+      options.push(<option key="male" value={false} >Male</option>);
+      options.push(<option key="female" value={true} >Female</option>);
+    }else if(isFemale === false){
+      genderSelectorDefaultValue = false;
+      options.push(<option key="male" value={false} >Male</option>);
+      options.push(<option key="female" value={true} >Female</option>);
     }else{
-      options.push(<option key="male" value={false}>Male</option>);
-      options.push(<option key="female" value={true} defaultValue={true}>Female</option>);
+      genderSelectorDefaultValue = true;
+      options.push(<option key="male" value={false} >Male</option>);
+      options.push(<option key="female" value={true} >Female</option>);
     }
-    return(<select name="isFemale">{options}</select>);
+    return(<select name="isFemale" defaultValue={genderSelectorDefaultValue} >{options}</select>);
   }
 
   //Return Logic
@@ -79,7 +86,7 @@ function AnimalCreateForm(props){
                   name="weight"
                   min={0}
                   step={0.1}
-                  defaultValue={props.animal.weightkilo} />
+                  defaultValue={props.animal.weightKilo} />
               </div>
             </div>
             <div style={styles.columnFiveFive}>
@@ -87,7 +94,7 @@ function AnimalCreateForm(props){
                 <h2>Gender</h2>
               </div>
               <div style={styles.input}>
-                {BuildGenderSelector(props.animal.isfemale)}
+                {BuildGenderSelector(props.animal.isFemale)}
               </div>
             </div>
             <div style={styles.columnFiveFive}>
@@ -155,7 +162,7 @@ function AnimalCreateForm(props){
                   name="weight"
                   min={0}
                   step={0.1}
-                  defaultValue={props.animal.weightkilo} />
+                  defaultValue={props.animal.weightKilo} />
               </div>
             </div>
             <div style={styles.columnFiveFive}>
@@ -163,7 +170,7 @@ function AnimalCreateForm(props){
                 <h2>Gender</h2>
               </div>
               <div style={styles.input}>
-                {BuildGenderSelector(props.animal.isfemale)}
+                {BuildGenderSelector(props.animal.isFemale)}
               </div>
             </div>
             <div style={styles.columnFiveFive}>
@@ -220,7 +227,7 @@ function AnimalCreateForm(props){
 }
 
 AnimalCreateForm.defaultProps = {
-  animal: {name: "", weightkilo: 0, isfemale: false, birthday: "2000-01-01T0:00:00", coloring: "", description: "", breed: ""},
+  animal: {name: "", weightKilo: 0, isFemale: undefined, birthday: "2000-01-01T0:00:00", coloring: "", description: "", breed: ""},
   submitFunc: () => {console.log("No submitFunc given to AnimalCreateForm")}
 }
 
