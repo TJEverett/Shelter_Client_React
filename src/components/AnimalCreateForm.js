@@ -44,8 +44,8 @@ function AnimalCreateForm(props){
   function BuildGenderSelector(isFemale){
     let options = [];
     let genderSelectorDefaultValue = "selectGender";
-    if(isFemale === undefined){
-      options.push(<option key="default" value="selectGender" disabled hidden>Select Gender</option>);
+    if(isFemale === true){
+      genderSelectorDefaultValue = true;
       options.push(<option key="male" value={false} >Male</option>);
       options.push(<option key="female" value={true} >Female</option>);
     }else if(isFemale === false){
@@ -53,7 +53,7 @@ function AnimalCreateForm(props){
       options.push(<option key="male" value={false} >Male</option>);
       options.push(<option key="female" value={true} >Female</option>);
     }else{
-      genderSelectorDefaultValue = true;
+      options.push(<option key="default" value="selectGender" disabled hidden>Select Gender</option>);
       options.push(<option key="male" value={false} >Male</option>);
       options.push(<option key="female" value={true} >Female</option>);
     }
