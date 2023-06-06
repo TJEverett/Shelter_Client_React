@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import AnimalProperty from "./AnimalProperty";
 
 class AnimalDetails extends React.Component{
   constructor(props){
@@ -18,20 +19,6 @@ class AnimalDetails extends React.Component{
         animal: this.props.animal,
         animalKeyCount
       });
-    }
-  };
-
-  //Styles Object
-  styles = {
-    columnThreeSeven: {
-      display: "grid",
-      gridTemplateColumns: "30% 70%",
-      gridTemplateRows: "100%"
-    },
-    center: {
-      display: "flex",
-      justifyContent: "center",
-      alignContent: "center"
     }
   };
 
@@ -67,31 +54,19 @@ class AnimalDetails extends React.Component{
     for (let i = 0; i < (keysCount - 1); i++) {
       if (i === 1) {
         animalDetails.push(
-          <div key={"div" + i} style={this.styles.columnThreeSeven}>
-            <h2 style={this.styles.center}>{keyTitles[i]}</h2>
-            <p style={this.styles.center}>{animal[keyCodes[i]]} Kilograms</p>
-          </div>
+          <AnimalProperty title={keyTitles[i]} body={animal[keyCodes[i]]} key={"property" + i}/>
         );
       } else if (i === 2) {
         animalDetails.push(
-          <div key={"div" + i} style={this.styles.columnThreeSeven}>
-            <h2 style={this.styles.center}>{keyTitles[i]}</h2>
-            <p style={this.styles.center}>{this.GenderTranslate(animal[keyCodes[i]])}</p>
-          </div>
+          <AnimalProperty title={keyTitles[i]} body={this.GenderTranslate(animal[keyCodes[i]])} key={"property" + i}/>
         );
       } else if (i === 3) {
         animalDetails.push(
-          <div key={"div" + i} style={this.styles.columnThreeSeven}>
-            <h2 style={this.styles.center}>{keyTitles[i]}</h2>
-            <p style={this.styles.center}>{this.BirthdayTranslate(animal[keyCodes[i]])}</p>
-          </div>
+          <AnimalProperty title={keyTitles[i]} body={this.BirthdayTranslate(animal[keyCodes[i]])} key={"property" + i}/>
         );
       } else {
         animalDetails.push(
-          <div key={"div" + i} style={this.styles.columnThreeSeven}>
-            <h2 style={this.styles.center}>{keyTitles[i]}</h2>
-            <p style={this.styles.center}>{animal[keyCodes[i]]}</p>
-          </div>
+          <AnimalProperty title={keyTitles[i]} body={animal[keyCodes[i]]} key={"property" + i}/>
         );
       }
     }
