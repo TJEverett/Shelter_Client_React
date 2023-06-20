@@ -56,19 +56,17 @@ function AuthModifyUsers(){
   //Render Logic
   let modalBlock = <div />
   let modalContents = [];
-  let modalMode = true;
 
   if(errorMessage !== null){
     if(typeof errorMessage === "string"){
       modalContents.push(<h2 key={"h2Tag1"}>Server Message:</h2>);
       modalContents.push(<h3 key={"h3Tag1"}>{errorMessage}</h3>);
       modalContents.push(<div style={styles.center} key={"clearButton1"}><button onClick={ClearError}>Clear</button></div>);
-      modalMode = false;
     }else{
       modalContents.push(<h2 key={"h2Tag2"}>ERROR: {errorMessage.message}</h2>);
       modalContents.push(<div style={styles.center} key={"clearButton2"}><button onClick={ClearError}>Clear</button></div>);
     }
-    modalBlock = <ErrorModal show={true} handleClose={ClearError} errorMode={modalMode} >
+    modalBlock = <ErrorModal show={true} handleClose={ClearError} >
       <div style={{...styles.center, ...{flexDirection: "column"}}}>
         {modalContents}
       </div>

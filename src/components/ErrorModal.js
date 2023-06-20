@@ -13,7 +13,7 @@ function ErrorModal(props) {
     },
     internal: {
       position: "fixed",
-      background: "rgba(230, 230, 80, 1)",
+      background: "white",
       width: "60vw",
       height: "60vh",
       top: "50%",
@@ -30,6 +30,7 @@ function ErrorModal(props) {
       },
       button: {
         fontSize: "2em",
+        width: "1.5em",
         fontFamily: "monospace",
         background: "red"
       }
@@ -43,11 +44,10 @@ function ErrorModal(props) {
   }
 
   const modalOuterStyle = props.show ? { ...styles.base, display: "block" } : { ...styles.base, display: "none" };
-  const modalInternalStyle = props.errorMode ? styles.internal : { ...styles.internal, background: "lightgreen"};
 
   return (
     <div style={modalOuterStyle}>
-      <section style={modalInternalStyle}>
+      <section style={styles.internal}>
         <div style={styles.exit.positioning}>
           <button type="button" style={styles.exit.button} onClick={() => props.handleClose()}>X</button>
         </div>
@@ -59,14 +59,10 @@ function ErrorModal(props) {
   );
 }
 
-ErrorModal.defaultProps = {
-  errorMode: true
-}
 
 ErrorModal.propTypes = {
   handleClose: PropTypes.func,
   show: PropTypes.bool,
-  errorMode: PropTypes.bool,
   children: PropTypes.any
 };
 
