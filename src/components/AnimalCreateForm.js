@@ -60,6 +60,9 @@ function AnimalCreateForm(props){
     return(<select name="isFemale" defaultValue={genderSelectorDefaultValue} >{options}</select>);
   }
 
+  //Date Logic
+  const currentDate = new Date().toJSON().slice(0, 10);
+
   //Return Logic
   if(props.species === "cat"){
     return (
@@ -104,6 +107,8 @@ function AnimalCreateForm(props){
               <div style={styles.input}>
                 <input type="date"
                   name="birthday"
+                  min="2000-01-01"
+                  max={currentDate}
                   defaultValue={BirthdayTranslate(props.animal.birthday)} />
               </div>
             </div>
@@ -180,6 +185,8 @@ function AnimalCreateForm(props){
               <div style={styles.input}>
                 <input type="date"
                   name="birthday"
+                  min="2000-01-01"
+                  max={currentDate}
                   defaultValue={BirthdayTranslate(props.animal.birthday)} />
               </div>
             </div>
