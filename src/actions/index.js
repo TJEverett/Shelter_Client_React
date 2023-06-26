@@ -45,6 +45,13 @@ export const loopAt = (action, delay) => {
     return event
   }
 }
+export const delayAt = (action, delay) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(action);
+    }, delay);
+  }
+}
 
 //API Calls
 const ApiUrl = "http://localhost:5000/api";
@@ -215,7 +222,7 @@ export const ApiObjectCall = (type, animalId) => {
 export const ApiCatsCall = (type, dataObject) => {
   return (dispatch, getState) => {
     const authToken = getState().auth.token;
-    const animalId = dataObject.id;
+    const animalId = dataObject.catId;
     let options;
     let url;
 
@@ -225,15 +232,20 @@ export const ApiCatsCall = (type, dataObject) => {
           method: "POST",
           headers: {
             "Accept": "application/json, text/plain",
-            "Content-type": "application/json"
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
-          Authorization: "Bearer " + authToken,
           body: JSON.stringify(dataObject)
         };
         url = ApiUrl + "/cats";
         fetch(url, options)
-          .then(response => response.json())
-          .then(errorSave("Animal Added to Database")) //respond through error message
+          .then((response) => {
+            if (response.status === 200) {
+              dispatch(errorSave("Animal Added to Database")) //respond through error message
+            } else {
+              throw new Error(response.status);
+            }
+          })
           .catch((error) => {
             dispatch(errorSave(error)); //error report
           });
@@ -243,15 +255,21 @@ export const ApiCatsCall = (type, dataObject) => {
           method: "PUT",
           headers: {
             "Accept": "application/json, text/plain",
-            "Content-type": "application/json"
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
-          Authorization: "Bearer " + authToken,
           body: JSON.stringify(dataObject)
         };
         url = ApiUrl + "/cats/" + animalId;
         fetch(url, options)
-          .then(response => response.json())
-          .then(errorSave("Animal Updated")) //respond through error message
+          .then((response) => {
+            if (response.status === 200) {
+              dispatch(animalObjectSave(dataObject)); //Save animal that was passed to API
+              dispatch(errorSave("Animal Updated In Database")); //respond through error message
+            } else {
+              throw new Error(response.status);
+            }
+          })
           .catch((error) => {
             dispatch(errorSave(error)); //error report
           });
@@ -261,15 +279,19 @@ export const ApiCatsCall = (type, dataObject) => {
           method: "DELETE",
           headers: {
             "Accept": "application/json, text/plain",
-            "Content-type": "application/json"
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
-          Authorization: "Bearer " + authToken
         };
         url = ApiUrl + "/cats/" + animalId;
         fetch(url, options)
-          .then(response => response.json())
-          .then(() => {
-            dispatch(animalObjectClear()); //clear animal selection
+          .then((response) => {
+            if(response.status === 200){
+              dispatch(errorSave("Animal Deleted From Database")); //respond through error message
+              dispatch(delayAt(animalObjectClear(), 500)); //clear animal selection
+            } else {
+              throw new Error(response.status);
+            }
           })
           .catch((error) => {
             dispatch(errorSave(error)); //error report
@@ -284,7 +306,7 @@ export const ApiCatsCall = (type, dataObject) => {
 export const ApiDogsCall = (type, dataObject) => {
   return (dispatch, getState) => {
     const authToken = getState().auth.token;
-    const animalId = dataObject.id;
+    const animalId = dataObject.dogId;
     let options;
     let url;
 
@@ -294,15 +316,20 @@ export const ApiDogsCall = (type, dataObject) => {
           method: "POST",
           headers: {
             "Accept": "application/json, text/plain",
-            "Content-type": "application/json"
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
-          Authorization: "Bearer " + authToken,
           body: JSON.stringify(dataObject)
         };
         url = ApiUrl + "/dogs";
         fetch(url, options)
-          .then(response => response.json())
-          .then(errorSave("Animal Added to Database")) //respond through error message
+          .then((response) => {
+            if (response.status === 200) {
+              dispatch(errorSave("Animal Added to Database")) //respond through error message
+            } else {
+              throw new Error(response.status);
+            }
+          })
           .catch((error) => {
             dispatch(errorSave(error)); //error report
           });
@@ -312,15 +339,21 @@ export const ApiDogsCall = (type, dataObject) => {
           method: "PUT",
           headers: {
             "Accept": "application/json, text/plain",
-            "Content-type": "application/json"
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
-          Authorization: "Bearer " + authToken,
           body: JSON.stringify(dataObject)
         };
         url = ApiUrl + "/dogs/" + animalId;
         fetch(url, options)
-          .then(response => response.json())
-          .then(errorSave("Animal Updated")) //respond through error message
+          .then((response) => {
+            if (response.status === 200) {
+              dispatch(animalObjectSave(dataObject)); //Save animal that was passed to API
+              dispatch(errorSave("Animal Updated In Database")) //respond through error message
+            } else {
+              throw new Error(response.status);
+            }
+          })
           .catch((error) => {
             dispatch(errorSave(error)); //error report
           });
@@ -330,15 +363,19 @@ export const ApiDogsCall = (type, dataObject) => {
           method: "DELETE",
           headers: {
             "Accept": "application/json, text/plain",
-            "Content-type": "application/json"
+            "Content-type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
-          Authorization: "Bearer " + authToken
         };
         url = ApiUrl + "/dogs/" + animalId;
         fetch(url, options)
-          .then(response => response.json())
-          .then(() => {
-            dispatch(animalObjectClear()); //clear animal selection
+          .then((response) => {
+            if(response.status === 200){
+              dispatch(errorSave("Animal Deleted From Database")); //respond through error message
+              dispatch(delayAt(animalObjectClear(), 500)); //clear animal selection
+            } else {
+              throw new Error(response.status);
+            }
           })
           .catch((error) => {
             dispatch(errorSave(error)); //error report
