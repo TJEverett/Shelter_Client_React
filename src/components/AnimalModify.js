@@ -1,8 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { ApiCatsCall, ApiDogsCall, ApiObjectCall, errorClear, animalObjectClear } from "../actions/index";
 import CustomModal from "./CustomModal";
 import AnimalDetails from "./AnimalDetails";
 import AnimalCreateForm from "./AnimalCreateForm";
+import ErrorModal from "./ErrorModal";
 
 class AnimalModify extends React.Component{
   constructor(props){
@@ -10,19 +14,39 @@ class AnimalModify extends React.Component{
     this.state = {
       edit: props.editMode,
       species: props.species,
-      animal: props.animal,
-      createCounter: 0
+      createCounter: 0,
+      attemptDelete: false
     };
   }
 
+  //Lifecycle Functions
   componentDidUpdate(prevProps) {
-    if(this.props !== prevProps){
-      this.setState({
+    if((this.props !== prevProps) && (this.props.error === null)){
+      // console.log(prevProps);
+      this.setState((prevState) => ({
         edit: this.props.editMode,
         species: this.props.species,
-        animal: this.props.animal
-      });
+        createCounter: (prevState.createCounter + 1)
+      }));
     }
+  }
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    const action = animalObjectClear();
+    dispatch(action);
+  }
+
+  //Redux Functions
+  ClearError = () => {
+    const { dispatch } = this.props;
+    const action = errorClear();
+    dispatch(action);
+  }
+  AnimalUpdate = () => {
+    const animalId = this.props.animalSelected[`${this.state.species}Id`];
+    const { dispatch } = this.props;
+    const action = ApiObjectCall(this.state.species, animalId);
+    dispatch(action);
   }
 
   //Submit Functions
@@ -35,8 +59,8 @@ class AnimalModify extends React.Component{
     const birthday = event.target.birthday.value + "T00:00:00";
     let animal = {
       name: event.target.name.value,
-      weightkilo: parseFloat(event.target.weight.value),
-      isfemale: event.target.isFemale.value,
+      weightKilo: parseFloat(event.target.weight.value),
+      isFemale: (event.target.isFemale.value.toLowerCase() === "true"),
       birthday: birthday,
       coloring: event.target.coloring.value,
       description: event.target.description.value
@@ -51,40 +75,50 @@ class AnimalModify extends React.Component{
 
   CreateCat = (event) => {
     event.preventDefault();
+    const { dispatch } = this.props;
     const animal = this.CompileCat(event);
-    console.log("Creating Cat");
-    console.log(animal);
+    let action = ApiCatsCall("post", animal);
+    dispatch(action);
     this.resetCreateForm();
   }
   CreateDog = (event) => {
     event.preventDefault();
+    const { dispatch } = this.props;
     const animal = this.CompileDog(event);
-    console.log("Creating Dog");
-    console.log(animal);
+    let action = ApiDogsCall("post", animal);
+    dispatch(action);
     this.resetCreateForm();
   }
 
   EditCat = (event) => {
     event.preventDefault();
-    const animal = this.CompileCat(event);
-    console.log("Editing Cat with ID: " + this.state.animal.id);
-    console.log(animal);
-    this.resetCreateForm();
+    const { dispatch } = this.props;
+    let animal = this.CompileCat(event);
+    animal.catId = this.props.animalSelected[`${this.state.species}Id`];
+    let action = ApiCatsCall("put", animal);
+    dispatch(action);
   }
   EditDog = (event) => {
     event.preventDefault();
-    const animal = this.CompileDog(event);
-    console.log("Editing Dog with ID: " + this.state.animal.id);
-    console.log(animal);
-    this.resetCreateForm();
+    const { dispatch } = this.props;
+    let animal = this.CompileDog(event);
+    animal.dogId = this.props.animalSelected[`${this.state.species}Id`];
+    let action = ApiDogsCall("put", animal);
+    dispatch(action);
   }
 
   DeleteCat = () => {
-    console.log("Delete Cat with ID: " + this.state.animal.id);
+    const { dispatch } = this.props;
+    const animal = { catId: this.props.animalSelected[`${this.state.species}Id`] };
+    let action = ApiCatsCall("delete", animal);
+    dispatch(action);
     this.ModalHide();
   }
   DeleteDog = () => {
-    console.log("Delete Dog with ID: " + this.state.animal.id);
+    const { dispatch } = this.props;
+    const animal = { dogId: this.props.animalSelected[`${this.state.species}Id`] };
+    let action = ApiDogsCall("delete", animal);
+    dispatch(action);
     this.ModalHide();
   }
 
@@ -110,49 +144,100 @@ class AnimalModify extends React.Component{
         borderRadius: "50px",
         margin: "20px",
         padding: "10px"
-      }
+      },
+      table: {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gridTemplateRows: "1fr"
+      },
     }
 
-    let deleteAnimal = () => {console.log("Error in selected animal")};
-    let submitAnimal = () => {console.log("Error in selected animal")};
-    let animalDetails = [];
-    let animalDetailDisplay = null;
-    if(this.state.species === "cat"){
-      deleteAnimal = this.DeleteCat;
-      if(this.state.edit === true){
+    //Return Logic
+    if((this.props.error !== null) || (this.state.attemptDelete === true)){ //Error Modal and Delete Modal Blocks
+      const isErrorBool = (this.props.error !== null);
+      let errorModalContents = [];
+      let deleteAnimal = () => { console.log("Error in selected animal") };
+
+      if(isErrorBool){
+        if(typeof this.props.error === "string"){
+          errorModalContents.push(<h2 key={"h2Tag1"}>Server Message:</h2>);
+          errorModalContents.push(<h3 key={"h3Tag1"}>{this.props.error}</h3>);
+          errorModalContents.push(<div style={styles.center} key={"clearButton1"}><button onClick={this.ClearError}>Clear</button></div>);
+        }else{
+          errorModalContents.push(<h2 key={"h2Tag2"}>ERROR: {this.props.error.message}</h2>);
+          errorModalContents.push(<div style={styles.center} key={"clearButton2"}><button onClick={this.ClearError}>Clear</button></div>);
+        }
+      }
+
+      if (this.state.species === "cat") {
+        deleteAnimal = this.DeleteCat;
+      } else if (this.state.species === "dog") {
+        deleteAnimal = this.DeleteDog;
+      }
+
+      return(
+        <React.Fragment>
+          <ErrorModal show={isErrorBool} handleClose={this.ClearError} >
+            <div style={{...styles.center, ...{flexDirection: "column"}}}>
+              {errorModalContents}
+            </div>
+          </ErrorModal>
+          <CustomModal show={this.state.attemptDelete} handleClose={this.ModalHide}>
+            <h1 style={styles.center}>Are you sure you want to delete this animal from the database?</h1>
+            <div style={styles.center}>
+              <button onClick={deleteAnimal}>Confirm Delete</button>
+              <button onClick={this.ModalHide}>Cancel Delete</button>
+            </div>
+          </CustomModal>
+        </React.Fragment>
+      );
+    }
+    if(this.state.edit === true && this.props.animalSelected.name === undefined){ //Redirect Block
+      return(
+        <Redirect to={`/${this.state.species}s`}/>
+      )
+    }
+    if((this.state.edit === false) || (this.props.animalSelected.name === undefined)){ //Create View Block
+      let saveAnimal = () => {console.log("Error in selected animal")};
+      if (this.state.species === "cat") {
+        saveAnimal = this.CreateCat;
+      } else if (this.state.species === "dog") {
+        saveAnimal = this.CreateDog;
+      }
+    
+      return(
+        <React.Fragment>
+          <AnimalCreateForm key={this.state.createCounter} species={this.state.species} submitFunc={saveAnimal} />
+        </React.Fragment>
+      );
+    }
+    if(this.state.edit === true){ //Edit View Block
+      let submitAnimal = () => { console.log("Error in selected animal") };
+      let animalDetailsButtons = [];
+      let animalDetailsBuild = [];
+      let animalDetailDisplay = null;
+
+      if (this.state.species === "cat") {
         submitAnimal = this.EditCat;
-      }else{
-        submitAnimal = this.CreateCat;
-      }
-    }else if(this.state.species === "dog"){
-      deleteAnimal = this.DeleteDog;
-      if(this.state.edit === true){
+      } else if (this.state.species === "dog") {
         submitAnimal = this.EditDog;
-      }else{
-        submitAnimal = this.CreateDog;
       }
-    }
-    if(this.state.edit === true){
-      animalDetails.push(<AnimalDetails key="details" animal={this.state.animal} />);
-      animalDetails.push(<div key="deleteButton" style={styles.center}><button onClick={this.ModalShow}>Delete</button></div>);
-      animalDetailDisplay = <div style={styles.borderBubble}>{animalDetails}</div>
-    }
+      animalDetailsButtons.push(<div key="deleteButton" style={styles.center}><button style={{backgroundColor: "red"}} onClick={this.ModalShow}>Delete</button></div>)
+      animalDetailsButtons.push(<div key="refreshButton" style={styles.center}><button onClick={this.AnimalUpdate}>Refresh</button></div>)
+      animalDetailsBuild.push(<AnimalDetails key="details" animal={this.props.animalSelected} />);
+      animalDetailsBuild.push(<div style={styles.table} key="buttons">{animalDetailsButtons}</div>);
+      animalDetailDisplay = <div style={styles.borderBubble}>{animalDetailsBuild}</div>
 
-    return(
-      <React.Fragment>
-        <CustomModal show={this.state.attemptDelete} handleClose={this.ModalHide}>
-          <h1 style={styles.center}>Are you sure you want to delete this animal from the database?</h1>
-          <div style={styles.center}>
-            <button onClick={deleteAnimal}>Confirm Delete</button>
-            <button onClick={this.ModalHide}>Cancel Delete</button>
+      return(
+        <React.Fragment>
+          <div style={styles.borderBubble}>
+            <h1 style={styles.center}>Update Form</h1>
+            <AnimalCreateForm key={this.state.createCounter} species={this.state.species} animal={this.props.animalSelected} submitFunc={submitAnimal} />
           </div>
-        </CustomModal>
-        <div style={styles.borderBubble}>
-          <AnimalCreateForm key={this.state.createCounter} species={this.state.species} animal={this.state.animal} submitFunc={submitAnimal} />
-        </div>
-        {animalDetailDisplay}
-      </React.Fragment>
-    );
+          {animalDetailDisplay}
+        </React.Fragment>
+      );
+    }
   }
 }
 
@@ -162,8 +247,14 @@ AnimalModify.defaultProps = {
 
 AnimalModify.propTypes = {
   editMode: PropTypes.bool,
-  species: PropTypes.string,
-  animal: PropTypes.object
+  species: PropTypes.string
 }
 
-export default AnimalModify;
+const mapStateToProps = (state) => {
+  return {
+    animalSelected: state.animalObject,
+    error: state.error
+  }
+}
+
+export default connect(mapStateToProps)(AnimalModify);
