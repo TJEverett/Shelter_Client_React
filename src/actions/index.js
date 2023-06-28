@@ -81,6 +81,7 @@ export const ApiAuthCall = (type, userInfo) => {
         fetch(url, options)
           .then((response) => {
             if(response.status === 200){
+              dispatch(delayAt(errorSave("Login Successful"), 1000)); //respond through error message
               return response.json();
             } else {
               throw new Error(response.status);
