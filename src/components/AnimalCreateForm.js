@@ -82,7 +82,7 @@ function AnimalCreateForm(props){
             </div>
             <div style={styles.columnFiveFive}>
               <div style={styles.center}>
-                <h2>Weight</h2>
+                <h2>Weight (Kilograms)</h2>
               </div>
               <div style={styles.input}>
                 <input type="number"
@@ -160,7 +160,7 @@ function AnimalCreateForm(props){
             </div>
             <div style={styles.columnFiveFive}>
               <div style={styles.center}>
-                <h2>Weight</h2>
+                <h2>Weight (Kilograms)</h2>
               </div>
               <div style={styles.input}>
                 <input type="number"

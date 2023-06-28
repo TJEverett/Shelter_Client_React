@@ -54,7 +54,7 @@ class AnimalDetails extends React.Component{
     for (let i = 0; i < (keysCount - 1); i++) {
       if (i === 1) {
         animalDetails.push(
-          <AnimalProperty title={keyTitles[i]} body={animal[keyCodes[i]]} key={"property" + i}/>
+          <AnimalProperty title={keyTitles[i]} body={animal[keyCodes[i]] + " Kilograms"} key={"property" + i}/>
         );
       } else if (i === 2) {
         animalDetails.push(
