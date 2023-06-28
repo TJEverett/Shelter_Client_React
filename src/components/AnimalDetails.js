@@ -35,7 +35,7 @@ class AnimalDetails extends React.Component{
   //Data Translation Functions
    BirthdayTranslate = (dateString) => {
     const monthArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const monthNumber = parseInt(dateString.substring(5, 7));
+    const monthNumber = parseInt(dateString.substring(5, 7)) - 1;
     const year = dateString.substring(0, 4);
     const month = monthArray[monthNumber];
     const day = dateString.substring(8, 10);
